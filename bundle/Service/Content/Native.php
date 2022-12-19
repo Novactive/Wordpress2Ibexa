@@ -8,13 +8,7 @@ use Almaviacx\Bundle\Ibexa\WordPress\Service\Traits\ConfigResolverTrait;
 use Almaviacx\Bundle\Ibexa\WordPress\Service\Traits\HttpClientTrait;
 use Almaviacx\Bundle\Ibexa\WordPress\Service\Traits\IbexaRepositoryTrait;
 use Almaviacx\Bundle\Ibexa\WordPress\ValueObject\WPObject;
-use Exception;
-use Ibexa\Contracts\Core\Repository\Exceptions\BadStateException;
-use Ibexa\Contracts\Core\Repository\Exceptions\ContentFieldValidationException;
-use Ibexa\Contracts\Core\Repository\Exceptions\ContentValidationException;
-use Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException;
 use Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException;
-use Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\Content\ContentStruct;
 use Ibexa\Core\FieldType\TextLine\Value as TextLineValue;
@@ -43,15 +37,6 @@ EOD;
         $this->richTextType = $richTextType;
     }
 
-    /**
-     * @throws ContentFieldValidationException
-     * @throws InvalidArgumentException
-     * @throws BadStateException
-     * @throws ContentValidationException
-     * @throws UnauthorizedException
-     * @throws NotFoundException
-     * @throws Exception
-     */
     public function createContent(
         WPObject $object,
         array $values,
@@ -152,6 +137,9 @@ EOD;
         return $this->richTextType->fromHash($content);
     }
 
+    /**
+     * @throws ImageNotFoundException
+     */
     private function prepareImage(?string $url, ?string $remoteId): string
     {
         if ('' === trim($url ?? '')) {
@@ -166,7 +154,7 @@ EOD;
             if (200 !== $response->getStatusCode()) {
                 throw new \RuntimeException('Status code is not 200: '.$response->getStatusCode());
             }
-            $baseName      = pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_BASENAME);
+            $baseName   = pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_BASENAME);
             $exportPath = $this->getLocalImageStorageDir();
             if (!file_exists($exportPath)) {
                 mkdir($exportPath, 0777, true);
@@ -184,6 +172,9 @@ EOD;
         }
     }
 
+    /**
+     * @throws ImageNotFoundException
+     */
     private function updateContentStruct(ContentStruct $contentStruct, $fieldSettings, string $remoteId)
     {
         foreach ($fieldSettings as $identifier => $fieldInfo) {

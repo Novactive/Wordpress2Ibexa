@@ -9,3 +9,4 @@ parameters:
   word_press_ibexa.default.webroot_dir: '%kernel.project_dir%/public'
   word_press_ibexa.default.local_image_root_dir: '/tmp/wordpress_images/'
   word_press_ibexa.default.image_separator: '__'
+  word_press_ibexa.default.path_prefix: 'blog'
