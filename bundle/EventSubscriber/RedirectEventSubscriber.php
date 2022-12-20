@@ -36,7 +36,7 @@ class RedirectEventSubscriber implements EventSubscriberInterface
         $exception = $event->getThrowable();
         if ($exception instanceof NotFoundHttpException && Response::HTTP_NOT_FOUND === $exception->getStatusCode()) {
             $request          = $event->getRequest();
-            $semanticPathInfo = $request->attributes->get('semanticPathinfo', null);
+            $semanticPathInfo = $request->attributes->get('semanticPathinfo');
             if ($semanticPathInfo) {
                 $locationId = $this->redirectService->getIbexaLocationId($semanticPathInfo);
                 if (null !== $locationId) {

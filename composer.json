@@ -18,7 +18,7 @@
     "type": "ibexa-bundle",
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
         "ext-zip": "*"
     },
     "require-dev": {
@@ -28,6 +28,13 @@
     "autoload": {
         "psr-4": {
             "Almaviacx\\Bundle\\Ibexa\\WordPress\\": "bundle/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "ibexa/post-install": true
         }
     }
 }

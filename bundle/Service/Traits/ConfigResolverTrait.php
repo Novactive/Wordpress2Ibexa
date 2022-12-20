@@ -54,13 +54,6 @@ trait ConfigResolverTrait
         return trim($baseUrl, '/').'/'.$prefix.'/'.trim($serviceURL, '/');
     }
 
-    private function getPerPage(string $root): int
-    {
-        $values = $this->configResolver->getParameter($root, self::NAMESPACE);
-
-        return (int) ($values['per_page'] ?? null);
-    }
-
     public function getRootLocationId(): int
     {
         return (int) $this->configResolver->getParameter('content.tree_root.location_id');

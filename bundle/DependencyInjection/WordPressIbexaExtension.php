@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Almaviacx\Bundle\Ibexa\WordPress\DependencyInjection;
 
-use Exception;
 use Ibexa\Bundle\Core\DependencyInjection\Configuration\SiteAccessAware\ConfigurationProcessor;
-use Ibexa\Bundle\Core\DependencyInjection\Configuration\SiteAccessAware\ContextualizerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -23,6 +21,9 @@ class WordPressIbexaExtension extends Extension implements PrependExtensionInter
         return self::EXTENSION_NAME;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
@@ -44,7 +45,7 @@ class WordPressIbexaExtension extends Extension implements PrependExtensionInter
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function prepend(ContainerBuilder $container)
     {
@@ -60,11 +61,5 @@ class WordPressIbexaExtension extends Extension implements PrependExtensionInter
     {
         $config = Yaml::parse(file_get_contents($configFile));
         $container->prependExtensionConfig($extensionName, $config);
-    }
-
-    private function prependIbexa(ContainerBuilder $container): void
-    {
-        $config = Yaml::parse(file_get_contents(__DIR__.'/../Resources/config/ibexa.yaml'));
-        $container->prependExtensionConfig('ibexa', $config);
     }
 }
